@@ -36,38 +36,39 @@ console.log("2- Los mayores de 25 son:", edadFilter);
 
 /*----------- Ejercicio 3 -----------*/
 
-const edades = alumnos.map(edadesAlumnos => {
+const edades = alumnos.reduce((acumulador, edadesAlumnos) => {
 
-    return edadesAlumnos.edad
+    const { edad } = edadesAlumnos
+    return acumulador + edad
 
-})
+}, 0)
 
-const edadesTotal = edades.reduce((a, b) => a + b)
-
-console.log("3- ", edadesTotal);
+console.log("3- ", edades);
 
 /*----------- Ejercicio 4 -----------*/
 
-const mica = alumnos.find(nombreMica => {
-
+/*const mica = alumnos.find(nombreMica => {
+    
     return nombreMica.nombre === 'Micaela Orfali'
 
 })
 
-console.log("4- ", mica.edad);
+console.log("4- ", mica.edad);*/
 
 /*----------- Ejercicio 5 -----------*/
 
 const [sofi] = alumnos
+const sofia = sofi.nombre
 
 console.log("5.a - ", sofi);
-console.log("5.b - ", sofi.nombre);
+console.log("5.b - ", sofia);
 
 /*----------- Ejercicio 6 -----------*/
 
 const primeraLetra = alumnos.filter(alumnoLetra => {
 
-    return alumnoLetra.nombre[0] === 'L'
+    const { nombre } = alumnoLetra
+    return nombre.charAt(0) === 'L'
 
 })
 
@@ -82,8 +83,65 @@ const extras = alumnos.map(extraAlumno => {
 
 })
 
+const alumnosConPropiedad = alumnos.map((alumno) => {
+
+    return { ...alumno, dni: '2222' }
+
+})
+
+/*const extras = alumnos.map(extraAlumno => {
+
+    extraAlumno.carrera = "Multimedia"
+    return extraAlumno;
+
+})*/
+
 console.log('7- ', extras)
+console.log('7- ', alumnosConPropiedad)
 
 /*----------- Ejercicio 8 -----------*/
 
-console.log("8- El promedio de edad es: ", edadesTotal / alumnos.length);
+console.log("8- El promedio de edad es: ", edades / alumnos.length);
+
+/*----------- Ejercicio 10 (12) -----------*/
+
+const getDataWithPromises = id => {
+
+    const json = response => response.json()
+
+    fetch('https://rickandmortyapi.com/api/character/' + id)
+        .then(status)
+        .then(json)
+        .then(data => {
+
+            console.log('Request succeeded with JSON response', data)
+
+        })
+}
+
+console.log(getDataWithPromises(2))
+
+/*----------- Ejercicio 11 (12) -----------*/
+const getDataWithAsync = idem => {
+    const getId = async () => {
+        try {
+            const response = await fetch('https://rickandmortyapi.com/api/character/' + idem)
+            const character = await response.json()
+            return character
+        } catch (error) {
+
+        }
+    }
+
+    const mainLogic = async () => {
+        const character = await getId()
+        console.log(character)
+        document.querySelector("#content").innerHTML = "<p>" + character.name + "</p>"
+    }
+    mainLogic()
+
+    
+
+}
+
+console.log(getDataWithAsync(4))
